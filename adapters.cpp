@@ -1,4 +1,8 @@
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
 #include "WProgram.h"
+#endif
 #include "sm130.h"
 
 uint8_t sm130_checksum(uint8_t *data, int len) {
@@ -19,7 +23,7 @@ void UARTInterfaceAdapter::begin(int rate) {
 void UARTInterfaceAdapter::send(nfc_command_t command, uint8_t *data, int len) {
   uint8_t checksum = len + 1 + command;
   _nfc.write(0xFF);
-  _nfc.write(0x00);
+  _nfc.write(byte(0x00));
   _nfc.write(len + 1);
   _nfc.write(command);
   for(int i = 0; i < len; i++) {
